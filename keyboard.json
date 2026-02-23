@@ -1,0 +1,45 @@
+{
+  "manufacturer": "Sina",
+  "keyboard_name": "micro_2x3_enc",
+  "maintainer": "Sina",
+  "diode_direction": "ROW2COL",
+  "matrix_pins": {
+    "rows": ["D1", "D0"],
+    "cols": ["D4", "C6", "D7"]
+  },
+  "processor": "atmega32u4",
+  "bootloader": "caterina",
+  "usb": {
+    "vid": "0x5349",
+    "pid": "0x3233",
+    "device_version": "0x0001"
+  },
+  "features": {
+    "bootmagic": true,
+    "extrakey": true,
+    "encoder": true,
+    "rgblight": true,
+    "via": true
+  },
+  "encoder": {
+    "rotary": [
+      { "pin_a": "B3", "pin_b": "B1" }
+    ]
+  },
+  "ws2812": { "pin": "F4" },
+  "rgblight": {
+    "led_count": 6
+  },
+  "layouts": {
+    "LAYOUT_2x3": {
+      "layout": [
+        { "matrix": [0, 0], "x": 0, "y": 0 },
+        { "matrix": [0, 1], "x": 1, "y": 0 },
+        { "matrix": [0, 2], "x": 2, "y": 0 },
+        { "matrix": [1, 0], "x": 0, "y": 1 },
+        { "matrix": [1, 1], "x": 1, "y": 1 },
+        { "matrix": [1, 2], "x": 2, "y": 1 }
+      ]
+    }
+  }
+}
