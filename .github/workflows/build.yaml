@@ -35,6 +35,11 @@ jobs:
             libusb-1.0-0-dev \
             make git
 
+      - name: QMK Setup
+        run: |
+          qmk setup --yes
+          rsync -a --exclude='.git' --exclude='.github' . ~/qmk_firmware/keyboards/ohropax_keyboard/
+
       - name: QMK build (ohropax_keyboard:default)
         run: |
-          qmk build -kb ohropax_keyboard -km default
+          qmk compile -kb ohropax_keyboard -km default
