@@ -43,4 +43,4 @@ jobs:
       - name: QMK build (ohropax_keyboard:default)
         run: |
 
-          qmk build -kb Ohropax_keyboard -km default
+          qmk build -kb ohropax_keyboard -km default
