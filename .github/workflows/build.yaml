@@ -35,6 +35,6 @@ jobs:
             libusb-1.0-0-dev \
             make git
 
-      - name: QMK compile (ohropax_keyboard:default)
+      - name: QMK build (ohropax_keyboard:default)
         run: |
-          qmk compile -kb ohropax_keyboard -km default
+          qmk build -kb ohropax_keyboard -km default
