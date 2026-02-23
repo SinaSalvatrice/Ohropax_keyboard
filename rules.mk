@@ -1,11 +1,11 @@
-VIA_ENABLE = yes
+VIA_ENABLE = no
 LTO_ENABLE = yes
-
+MCU = atmega32u4
+BOOTLOADER = caterina
 ENCODER_ENABLE = yes
 EXTRAKEY_ENABLE = yes
-
 RGBLIGHT_ENABLE = yes
-WS2812_DRIVER = vendor
+
 
 # optional, falls du später Makros brauchst:
 # TAP_DANCE_ENABLE = yes
