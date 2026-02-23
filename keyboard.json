@@ -12,7 +12,7 @@
   "usb": {
     "vid": "0x5349",
     "pid": "0x3233",
-    "device_version": "0x0001"
+    "device_version": "1.0.0"
   },
   "features": {
     "bootmagic": true,
@@ -26,11 +26,14 @@
       { "pin_a": "B3", "pin_b": "B1" }
     ]
   },
-  "ws2812": { "pin": "F4" },
-  "rgblight": {
-    "led_count": 6
-  },
-  "layouts": {
+"ws2812": {
+  "pin": "F4",
+  "driver": "bitbang"
+},
+"rgblight": {
+  "led_count": 6
+},
+"layouts": {
     "LAYOUT_2x3": {
       "layout": [
         { "matrix": [0, 0], "x": 0, "y": 0 },
