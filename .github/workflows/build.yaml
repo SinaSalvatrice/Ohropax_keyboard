@@ -50,5 +50,4 @@ jobs:
           name: firmware_ohropax_keyboard_default
           path: |
             ~/qmk_firmware/.build/*.hex
-            ~/qmk_firmware/.build/*.bin
-            ~/qmk_firmware/.build/*.uf2
+          
