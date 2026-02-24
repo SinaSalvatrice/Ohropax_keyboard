@@ -1,53 +1,53 @@
-name: QMK Build
+name: Build QMK firmware
 
 on:
-  push:
-    branches: [ "main", "master" ]
-  pull_request:
   workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "ohropax_keyboard/**"
+      - ".github/workflows/qmk-build.yml"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: Checkout your keyboard repo
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Checkout QMK firmware
+        uses: actions/checkout@v4
         with:
-          python-version: "3.11"
+          repository: qmk/qmk_firmware
+          path: qmk_firmware
+          fetch-depth: 1
 
-      - name: Install QMK CLI
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install qmk
-
-      - name: Install build deps
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            gcc-avr avr-libc avrdude \
-            gcc-arm-none-eabi binutils-arm-none-eabi \
-            clang-format \
-            dfu-programmer dfu-util \
-            libusb-1.0-0-dev \
-            make git
+          sudo apt-get install -y python3 python3-pip avr-libc gcc-avr dfu-programmer dfu-util unzip zip
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r qmk_firmware/requirements.txt
 
-      - name: QMK Setup
+      - name: Copy keyboard into QMK tree
         run: |
-          qmk setup --yes
-          rsync -a --exclude='.git' --exclude='.github' . ~/qmk_firmware/keyboards/ohropax_keyboard/
+          rm -rf qmk_firmware/keyboards/ohropax_keyboard
+          cp -r ohropax_keyboard qmk_firmware/keyboards/ohropax_keyboard
 
-      - name: QMK compile (ohropax_keyboard:default)
+      - name: Build (keymap:sina)
+        working-directory: qmk_firmware
         run: |
-          qmk compile -kb ohropax_keyboard -km default
+          python3 -m qmk compile -kb ohropax_keyboard -km sina
 
-      - name: Upload firmware artifact
+      - name: Collect artifacts
+        run: |
+          mkdir -p artifacts
+          cp -v qmk_firmware/.build/*.hex artifacts/ || true
+          cp -v qmk_firmware/*.hex artifacts/ || true
+          ls -la artifacts
+
+      - name: Upload HEX artifact
         uses: actions/upload-artifact@v4
         with:
-          name: firmware_ohropax_keyboard_default
-          path: |
-            ~/qmk_firmware/.build/*.hex
-          
+          name: qmk-hex
+          path: artifacts/*.hex
