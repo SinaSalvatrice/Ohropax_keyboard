@@ -40,6 +40,6 @@ jobs:
           qmk setup --yes
           rsync -a --exclude='.git' --exclude='.github' . ~/qmk_firmware/keyboards/ohropax_keyboard/
 
-      - name: QMK build (ohropax_keyboard:default)
+      - name: QMK compile (ohropax_keyboard:default)
         run: |
-          qmk build -kb ohropax_keyboard -km default
+          qmk compile -kb ohropax_keyboard -km default
