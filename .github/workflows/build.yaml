@@ -43,3 +43,12 @@ jobs:
       - name: QMK compile (ohropax_keyboard:default)
         run: |
           qmk compile -kb ohropax_keyboard -km default
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware_ohropax_keyboard_default
+          path: |
+            ~/qmk_firmware/.build/*.hex
+            ~/qmk_firmware/.build/*.bin
+            ~/qmk_firmware/.build/*.uf2
