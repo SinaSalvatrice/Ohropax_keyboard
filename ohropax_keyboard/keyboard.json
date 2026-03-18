@@ -1,6 +1,6 @@
 {
   "manufacturer": "Sina",
-  "keyboard_name": "Ohropax_keyboard",
+  "keyboard_name": "ohropax_keyboard",
   "maintainer": "Sina",
   "diode_direction": "ROW2COL",
   "matrix_pins": {
