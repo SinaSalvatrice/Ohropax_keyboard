@@ -22,13 +22,18 @@ jobs:
           path: qmk_firmware
           fetch-depth: 1
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3 python3-pip avr-libc gcc-avr dfu-programmer dfu-util unzip zip
-          python3 -m pip install --upgrade pip
-          python3 -m pip install qmk
-          python3 -m pip install -r qmk_firmware/requirements.txt
+          sudo apt-get install -y avr-libc gcc-avr dfu-programmer dfu-util unzip zip
+          pip install --upgrade pip
+          pip install qmk
+          pip install -r qmk_firmware/requirements.txt
 
       - name: Copy keyboard into QMK tree
         run: |
@@ -38,7 +43,7 @@ jobs:
       - name: Build (keymap:sina)
         working-directory: qmk_firmware
         run: |
-          python3 -m qmk compile -kb Ohropax_keyboard -km sina
+          qmk compile -kb Ohropax_keyboard -km sina
 
       - name: Collect artifacts
         run: |
