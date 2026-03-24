@@ -1,14 +1,14 @@
 {
   "manufacturer": "Sina",
-  "keyboard_name": "Ohropax_keyboard",
+  "keyboard_name": "ohropax_keyboard",
   "maintainer": "Sina",
   "diode_direction": "ROW2COL",
   "matrix_pins": {
     "rows": ["D1", "D0"],
     "cols": ["D4", "C6", "D7"]
   },
-  "processor": "atmega32u4",
-  "bootloader": "caterina",
+  "processor": "RP2040",
+  "bootloader": "rp2040",
   "usb": {
     "vid": "0x5349",
     "pid": "0x3233",
@@ -28,7 +28,7 @@
   },
 "ws2812": {
   "pin": "GP13",
-  "driver": "bitbang"
+  "driver": "vendor"
 },
 "rgblight": {
   "led_count": 6

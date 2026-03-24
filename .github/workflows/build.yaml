@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "Ohropax_keyboard/**"
+      - "ohropax_keyboard/**"
       - ".github/workflows/qmk-build.yml"
 
 jobs:
@@ -37,13 +37,13 @@ jobs:
 
       - name: Copy keyboard into QMK tree
         run: |
-          rm -rf qmk_firmware/keyboards/Ohropax_keyboard
-          cp -r Ohropax_keyboard qmk_firmware/keyboards/Ohropax_keyboard
+          rm -rf qmk_firmware/keyboards/ohropax_keyboard
+          cp -r ohropax_keyboard qmk_firmware/keyboards/ohropax_keyboard
 
       - name: Build (keymap:sina)
         working-directory: qmk_firmware
         run: |
-          qmk compile -kb Ohropax_keyboard -km sina
+          qmk compile -kb ohropax_keyboard -km sina
 
       - name: Collect artifacts
         run: |
