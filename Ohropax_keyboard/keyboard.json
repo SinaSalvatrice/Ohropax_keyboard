@@ -27,7 +27,7 @@
     ]
   },
 "ws2812": {
-  "pin": "F4",
+  "pin": "GP13",
   "driver": "bitbang"
 },
 "rgblight": {
