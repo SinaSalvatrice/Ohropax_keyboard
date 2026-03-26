@@ -1,4 +1,4 @@
-#include QMK_KEYBOARD_H
+#include qmk_keymap.h
 #include "lib/lib8tion/lib8tion.h"  // sin8()
 #include "timer.h"
 
@@ -169,7 +169,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_move(L_NAV);
             }
             return false;
-            
+
         case LED_MODE_TOG:
             if (record->event.pressed) {
                 led_all_mode = !led_all_mode;
