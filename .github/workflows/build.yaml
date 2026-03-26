@@ -1,59 +1,66 @@
-name: Build QMK firmware
+name: Build Ohropax_keyboard sina firmware
 
 on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
-      - "ohropax_keyboard/**"
-      - ".github/workflows/qmk-build.yml"
+      - "config.h"
+      - "keyboard.json"
+      - "Ohropax_keyboard.c"
+      - "rules.mk"
+      - "keymaps/**"
+      - ".github/workflows/build.yaml"
+  pull_request:
 
 jobs:
-  build:
+  firmware:
     runs-on: ubuntu-latest
+    container: ghcr.io/qmk/qmk_cli@sha256:2dc05fc9f32efebd6b05c2b8676ee548358bc7e151e9dbf4dac6b6eed4513b07
+    permissions:
+      contents: read
+
+    env:
+      KEYBOARD: Ohropax_keyboard
+      KEYMAP: sina
+      QMK_HOME: /tmp/qmk_firmware
+
     steps:
-      - name: Checkout your keyboard repo
-        uses: actions/checkout@v4
-
-      - name: Checkout QMK firmware
+      - name: Checkout keyboard repo
         uses: actions/checkout@v4
         with:
-          repository: qmk/qmk_firmware
-          path: qmk_firmware
-          fetch-depth: 1
+          persist-credentials: false
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install dependencies
+      - name: Clone QMK Firmware
         run: |
-          sudo apt-get update
-          sudo apt-get install -y avr-libc gcc-avr dfu-programmer dfu-util unzip zip
-          pip install --upgrade pip
-          pip install qmk
-          pip install -r qmk_firmware/requirements.txt
+          git clone --depth 1 --filter=blob:none https://github.com/qmk/qmk_firmware.git "$QMK_HOME"
+          git -C "$QMK_HOME" submodule update --init --depth 1 lib/chibios lib/chibios-contrib lib/pico-sdk lib/printf lib/lufa
+          qmk config user.qmk_home="$QMK_HOME"
 
-      - name: Copy keyboard into QMK tree
+      - name: Inject keyboard sources
         run: |
-          rm -rf qmk_firmware/keyboards/ohropax_keyboard
-          cp -r ohropax_keyboard qmk_firmware/keyboards/ohropax_keyboard
+          mkdir -p "$QMK_HOME/keyboards/$KEYBOARD"
+          find "$QMK_HOME/keyboards/$KEYBOARD" -mindepth 1 -maxdepth 1 ! -name ".git" -exec rm -rf {} +
+          cp -R "$GITHUB_WORKSPACE/." "$QMK_HOME/keyboards/$KEYBOARD/"
+          rm -rf "$QMK_HOME/keyboards/$KEYBOARD/.git" "$QMK_HOME/keyboards/$KEYBOARD/.github"
 
-      - name: Build (keymap:sina)
-        working-directory: qmk_firmware
+      - name: Build firmware
         run: |
-          qmk compile -kb ohropax_keyboard -km sina
+          git config --global --add safe.directory "$QMK_HOME"
+          cd "$QMK_HOME"
+          qmk compile -kb "$KEYBOARD" -km "$KEYMAP"
 
-      - name: Collect artifacts
+      - name: Stage artifact
         run: |
-          mkdir -p artifacts
-          cp -v qmk_firmware/.build/*.hex artifacts/ || true
-          cp -v qmk_firmware/*.hex artifacts/ || true
-          ls -la artifacts
+          mkdir -p "$GITHUB_WORKSPACE/artifacts"
+          find "$QMK_HOME" -type f -name "${KEYBOARD}_${KEYMAP}.uf2" -exec cp {} "$GITHUB_WORKSPACE/artifacts/" \;
+          test -f "$GITHUB_WORKSPACE/artifacts/${KEYBOARD}_${KEYMAP}.uf2"
 
-      - name: Upload HEX artifact
+      - name: Upload firmware Ohropax_keyboard_sina.uf2
         uses: actions/upload-artifact@v4
         with:
-          name: qmk-hex
-          path: artifacts/*.hex
+          name: Ohropax_keyboard_sina_uf2
+          path: artifacts/Ohropax_keyboard_sina.uf2
+          if-no-files-found: error
+          compression-level: 6
+          overwrite: false
