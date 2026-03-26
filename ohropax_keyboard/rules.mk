@@ -1,11 +1,16 @@
-VIA_ENABLE = no
-LTO_ENABLE = yes
-MCU = atmega32u4
-BOOTLOADER = caterina
-ENCODER_ENABLE = yes
+MCU = RP2040
+BOOTLOADER = rp2040
+PLATFORM = rp2040
+PYTHON = python
+CONSOLE_ENABLE = yes
+# No ChibiOS or TMK dependencies for RP2040
+STRICT = no
+EXTRAFLAGS += -Wno-error
+
+MOUSEKEY_ENABLE = yes
 EXTRAKEY_ENABLE = yes
+ENCODER_ENABLE = yes
+
+
 RGBLIGHT_ENABLE = yes
-
-
-# optional, falls du später Makros brauchst:
-# TAP_DANCE_ENABLE = yes
+WS2812_DRIVER = vendor

@@ -1,13 +1,30 @@
 #pragma once
 
 #define DEBOUNCE 25
-#define DYNAMIC_KEYMAP_LAYER_COUNT 6 // RGB / WS2812
+#define DYNAMIC_KEYMAP_LAYER_COUNT 6
 #define RGBLIGHT_LIMIT_VAL 150
 #define RGBLIGHT_SLEEP
 
-// Encoder: Viele Encoder sind 4 Schritte pro Rastung.
-// Das macht es normal statt Maschinengewehr.
+
 #define ENCODER_RESOLUTION 4
+#define DEBOUNCE 25
+
+
+#define WS2812_DI_PIN GP13
+#define RGBLIGHT_LED_COUNT 6
+
+
+#define RGBLIGHT_LIMIT_VAL 150
+#define RGBLIGHT_SLEEP
 
 #define BOOTMAGIC_LITE_ROW 0
 #define BOOTMAGIC_LITE_COLUMN 0
+
+#define ENCODER_BTN_PIN GP10
+
+#define RGBLIGHT_LIMIT_VAL 160
+#define RGBLIGHT_DEFAULT_HUE 128
+#define RGBLIGHT_DEFAULT_SAT 255
+#define RGBLIGHT_DEFAULT_VAL 96
+#define RGBLIGHT_DEFAULT_SPD 128
+#define ONBOARD_LED_PIN GP13
