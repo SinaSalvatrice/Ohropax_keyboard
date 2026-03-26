@@ -31,18 +31,21 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Clone QMK Firmware
-        run: |
-          git clone --depth 1 --filter=blob:none https://github.com/qmk/qmk_firmware.git "$QMK_HOME"
-          git -C "$QMK_HOME" submodule update --init --depth 1 lib/chibios lib/chibios-contrib lib/pico-sdk lib/printf lib/lufa
-          qmk config user.qmk_home="$QMK_HOME"
+- name: Clone QMK Firmware
+  run: |
+    git clone --depth 1 --filter=blob:none https://github.com/qmk/qmk_firmware.git "$QMK_HOME"
+    git -C "$QMK_HOME" submodule update --init --depth 1 lib/chibios lib/chibios-contrib lib/pico-sdk lib/printf lib/lufa
+    qmk config user.qmk_home="$QMK_HOME"
 
-      - name: Inject keyboard sources
-        run: |
-          mkdir -p "$QMK_HOME/keyboards/$KEYBOARD"
-          find "$QMK_HOME/keyboards/$KEYBOARD" -mindepth 1 -maxdepth 1 ! -name ".git" -exec rm -rf {} +
-          cp -R "$GITHUB_WORKSPACE/." "$QMK_HOME/keyboards/$KEYBOARD/"
-          rm -rf "$QMK_HOME/keyboards/$KEYBOARD/.git" "$QMK_HOME/keyboards/$KEYBOARD/.github"
+- name: Install ARM toolchain
+  run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
+
+- name: Copy keyboard into QMK tree
+  run: |
+    mkdir -p "$QMK_HOME/keyboards/$KEYBOARD"
+    find "$QMK_HOME/keyboards/$KEYBOARD" -mindepth 1 -maxdepth 1 ! -name ".git" -exec rm -rf {} +
+    cp -R "$GITHUB_WORKSPACE/." "$QMK_HOME/keyboards/$KEYBOARD/"
+    rm -rf "$QMK_HOME/keyboards/$KEYBOARD/.git" "$QMK_HOME/keyboards/$KEYBOARD/.github"
 
       - name: Build firmware
         run: |
