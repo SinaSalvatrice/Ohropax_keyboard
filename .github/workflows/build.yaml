@@ -1,16 +1,16 @@
 
-name: Build Ohropax_keyboard sina firmware
+name: Build ohropax_keyboard sina firmware
 
 on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
-      - "config.h"
-      - "keyboard.json"
-      - "Ohropax_keyboard.c"
-      - "rules.mk"
-      - "keymaps/**"
+      - "ohropax_keyboard/config.h"
+      - "ohropax_keyboard/keyboard.json"
+      - "ohropax_keyboard/ohropax_keyboard.c"
+      - "ohropax_keyboard/rules.mk"
+      - "ohropax_keyboard/keymaps/**"
       - ".github/workflows/build.yaml"
   pull_request:
 
@@ -22,7 +22,7 @@ jobs:
       contents: read
 
     env:
-      KEYBOARD: Ohropax_keyboard
+      KEYBOARD: ohropax_keyboard
       KEYMAP: sina
       QMK_HOME: /tmp/qmk_firmware
 
@@ -30,7 +30,7 @@ jobs:
     - name: Checkout keyboard repo
       uses: actions/checkout@v4
       with:
-          persist-credentials: false
+        persist-credentials: false
 
     - name: Clone QMK Firmware
       run: |
@@ -45,8 +45,7 @@ jobs:
       run: |
         mkdir -p "$QMK_HOME/keyboards/$KEYBOARD"
         find "$QMK_HOME/keyboards/$KEYBOARD" -mindepth 1 -maxdepth 1 ! -name ".git" -exec rm -rf {} +
-        cp -R "$GITHUB_WORKSPACE/." "$QMK_HOME/keyboards/$KEYBOARD/"
-        rm -rf "$QMK_HOME/keyboards/$KEYBOARD/.git" "$QMK_HOME/keyboards/$KEYBOARD/.github"
+        cp -R "$GITHUB_WORKSPACE/$KEYBOARD/." "$QMK_HOME/keyboards/$KEYBOARD/"
 
     - name: Build firmware
       run: |
@@ -60,11 +59,11 @@ jobs:
         find "$QMK_HOME" -type f -name "${KEYBOARD}_${KEYMAP}.uf2" -exec cp {} "$GITHUB_WORKSPACE/artifacts/" \;
         test -f "$GITHUB_WORKSPACE/artifacts/${KEYBOARD}_${KEYMAP}.uf2"
 
-    - name: Upload firmware Ohropax_keyboard_sina.uf2
+    - name: Upload firmware ohropax_keyboard_sina.uf2
       uses: actions/upload-artifact@v4
       with:
-        name: Ohropax_keyboard_sina_uf2
-        path: artifacts/Ohropax_keyboard_sina.uf2
+        name: ohropax_keyboard_sina_uf2
+        path: artifacts/ohropax_keyboard_sina.uf2
         if-no-files-found: error
         compression-level: 6
         overwrite: false
