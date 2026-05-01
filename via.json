@@ -1,0 +1,15 @@
+{
+  "name": "ohropax_keyboard",
+  "vendorId": "0x5349",
+  "productId": "0x3233",
+  "matrix": {
+    "rows": 2,
+    "cols": 3
+  },
+  "layouts": {
+    "keymap": [
+      ["0,0", "0,1", "0,2"],
+      ["1,0", "1,1", "1,2"]
+    ]
+  }
+}
